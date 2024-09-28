@@ -1,6 +1,7 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:media_recommendation_app/widgets/movie_slider.dart';
+import 'package:media_recommendation_app/widgets/trending_slider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -40,34 +41,33 @@ class _HomeScreenState extends State<HomeScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                'Trending Movies',
+                'Trending',
                 style: GoogleFonts.inter(fontSize: 18),
               ),
-              const SizedBox(height: 20),
-              SizedBox(
-                width: double.infinity,
-                child: CarouselSlider.builder(
-                    itemCount: 10,
-                    options: CarouselOptions(
-                      height: 300,
-                      autoPlay: true,
-                      viewportFraction: 0.55,
-                      enlargeCenterPage: true,
-                      autoPlayCurve: Curves.fastOutSlowIn,
-                      pageSnapping: true,
-                      autoPlayAnimationDuration: const Duration(seconds: 1),
-                    ),
-                    itemBuilder: (context, itemIndex, pageViewIndex) {
-                      return ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: Container(
-                          color: const Color.fromARGB(255, 117, 117, 117),
-                          height: 300,
-                          width: 200,
-                        ),
-                      );
-                    }),
-              )
+              const SizedBox(height: 32),
+              const TrendingSlider(),
+              const SizedBox(
+                height: 32,
+              ),
+              Text(
+                'Top Rated',
+                style: GoogleFonts.inter(fontSize: 18),
+              ),
+              const SizedBox(
+                height: 32,
+              ),
+              const MovieSlider(),
+              const SizedBox(
+                height: 32,
+              ),
+              Text(
+                'Upcoming',
+                style: GoogleFonts.inter(fontSize: 18),
+              ),
+              const SizedBox(
+                height: 32,
+              ),
+              const MovieSlider(),
             ],
           ),
         ),
