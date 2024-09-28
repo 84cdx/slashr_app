@@ -32,9 +32,9 @@ class Movie {
       overview: json["overview"],
       posterPath: json["poster_path"],
       genreIds: List<int>.from(json["genre_ids"].map((item) => item as int)),
-      popularity: json["popularity"],
-      releaseDate: json["release_date"],
-      voteAverage: json["vote_average"],
+      popularity: json["popularity"].toDouble(),
+      releaseDate: json["release_date"].toString(),
+      voteAverage: json["vote_average"].toDouble(),
     );
   }
 
