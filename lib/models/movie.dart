@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class Movie {
   String title;
   String backDropPath;

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:media_recommendation_app/constants.dart';
+import 'package:media_recommendation_app/screens/details_screen.dart';
 
 class MovieSlider extends StatelessWidget {
   const MovieSlider({
@@ -21,15 +22,27 @@ class MovieSlider extends StatelessWidget {
         itemBuilder: (context, index) {
           return Padding(
             padding: const EdgeInsets.all(8.0),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: Container(
-                height: 225,
-                width: 150,
-                child: Image.network(
-                    filterQuality: FilterQuality.high,
-                    fit: BoxFit.cover,
-                    '${Constants.imageUrl}${snapshot.data![index].posterPath}'),
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => DetailsScreen(
+                      movie: snapshot.data[index],
+                    ),
+                  ),
+                );
+              },
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Container(
+                  height: 225,
+                  width: 150,
+                  child: Image.network(
+                      filterQuality: FilterQuality.high,
+                      fit: BoxFit.cover,
+                      '${Constants.imageUrl}${snapshot.data![index].posterPath}'),
+                ),
               ),
             ),
           );
