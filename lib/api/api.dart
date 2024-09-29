@@ -18,27 +18,51 @@ class Api {
     final response = await http.get(Uri.parse(_trendingUrl));
     if (response.statusCode == 200) {
       final decodedData = json.decode(response.body)['results'] as List;
-      return decodedData.map((movie) => Movie.fromJson(movie)).toList();
+      return decodedData
+          .map((movie) => Movie.fromJson(movie))
+          .where((movie) => movie.genreIds.contains(27))
+          .toList();
     } else {
       throw Exception('something went wrong');
     }
   }
 
-  Future<List<Movie>> getTopRatedMovies() async {
-    final response = await http.get(Uri.parse(_topRatedUrl));
-    if (response.statusCode == 200) {
-      final decodedData = json.decode(response.body)['results'] as List;
-      return decodedData.map((movie) => Movie.fromJson(movie)).toList();
-    } else {
-      throw Exception('something went wrong');
+  Future<List<Movie>> getTopRatedMovies(int totalPages) async {
+    List<Movie> allTopRatedMovies = [];
+
+    for (int i = 1; i <= totalPages; i++) {
+      final response = await http.get(Uri.parse('$_topRatedUrl&page=$i'));
+      if (response.statusCode == 200) {
+        final decodedData = json.decode(response.body)['results'] as List;
+        allTopRatedMovies
+            .addAll(decodedData.map((movie) => Movie.fromJson(movie)));
+      } else {
+        throw Exception('something went wrong');
+      }
     }
+
+    // Filtere die Horrorfilme
+    return allTopRatedMovies
+        .where((movie) => movie.genreIds.contains(27))
+        .toList();
   }
 
   Future<List<Movie>> getUpcomingMovies() async {
     final response = await http.get(Uri.parse(_upcomingUrl));
     if (response.statusCode == 200) {
       final decodedData = json.decode(response.body)['results'] as List;
-      return decodedData.map((movie) => Movie.fromJson(movie)).toList();
+      print(decodedData);
+      List<Movie> upcomingMovies =
+          decodedData.map((movie) => Movie.fromJson(movie)).toList();
+
+      // Filtere nur Filme mit Release-Datum in der Zukunft und Genre-ID 27
+      upcomingMovies = upcomingMovies.where((movie) {
+        DateTime releaseDate = DateTime.parse(movie.releaseDate);
+        return releaseDate.isAfter(DateTime.now()) &&
+            movie.genreIds.contains(27);
+      }).toList();
+
+      return upcomingMovies;
     } else {
       throw Exception('something went wrong');
     }

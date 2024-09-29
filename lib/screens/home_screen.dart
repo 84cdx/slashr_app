@@ -21,17 +21,17 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     trendingMovies = Api().getTrendingMovies();
-    topRatedMovies = Api().getTopRatedMovies();
+    topRatedMovies = Api().getTopRatedMovies(40);
     upcomingMovies = Api().getUpcomingMovies();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 20, 31, 34),
+      backgroundColor: const Color.fromARGB(255, 0, 0, 0),
       appBar: AppBar(
         title: Text(
-          'Home',
+          'Explore',
           style: GoogleFonts.inter(
             fontSize: 25,
             fontWeight: FontWeight.bold,
@@ -42,59 +42,63 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),
-            onPressed: () {
-            },
+            onPressed: () {},
           ),
         ],
       ),
-      body: Center(
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
+      body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(
+                  left: 24.0),
+              child: Text(
                 'Trending',
                 style: GoogleFonts.inter(
-                  fontSize: 18,
+                  fontSize: 22,
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              const SizedBox(height: 32),
-              SizedBox(
-                child: FutureBuilder(
-                  future: trendingMovies,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) {
-                      return Center(
-                        child: Text(snapshot.error.toString()),
-                      );
-                    } else if (snapshot.hasData) {
-                      return TrendingSlider(
-                        snapshot: snapshot,
-                      );
-                    } else {
-                      return const Center(child: CircularProgressIndicator());
-                    }
-                  },
-                ),
+            ),
+            const SizedBox(height: 16),
+            SizedBox(
+              child: FutureBuilder(
+                future: trendingMovies,
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    return Center(
+                      child: Text(snapshot.error.toString()),
+                    );
+                  } else if (snapshot.hasData) {
+                    return TrendingSlider(
+                      snapshot: snapshot,
+                    );
+                  } else {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                },
               ),
-              const SizedBox(
-                height: 32,
-              ),
-              Text(
-                'Top Rated',
+            ),
+            const SizedBox(height: 36),
+            Padding(
+              padding: const EdgeInsets.only(
+                  left: 24.0),
+              child: Text(
+                'All-Time Top Rated',
                 style: GoogleFonts.inter(
                   fontSize: 18,
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              const SizedBox(
-                height: 32,
-              ),
-              SizedBox(
+            ),
+            const SizedBox(height: 16),
+            Padding(
+              padding: const EdgeInsets.only(left: 24.0),
+              child: SizedBox(
                 child: FutureBuilder(
                   future: topRatedMovies,
                   builder: (context, snapshot) {
@@ -112,20 +116,23 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                 ),
               ),
-              const SizedBox(
-                height: 32,
-              ),
-              Text(
+            ),
+            const SizedBox(height: 36),
+            Padding(
+              padding: const EdgeInsets.only(
+                  left: 24.0),
+              child: Text(
                 'Upcoming',
                 style: GoogleFonts.inter(
                   fontSize: 18,
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              const SizedBox(
-                height: 32,
-              ),
-              SizedBox(
+            ),
+            const SizedBox(height: 16),
+            Padding(
+              padding: const EdgeInsets.only(left: 24.0),
+              child: SizedBox(
                 child: FutureBuilder(
                   future: upcomingMovies,
                   builder: (context, snapshot) {
@@ -143,8 +150,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

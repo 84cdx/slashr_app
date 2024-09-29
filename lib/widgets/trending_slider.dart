@@ -16,43 +16,50 @@ class TrendingSlider extends StatelessWidget {
     return SizedBox(
       width: double.infinity,
       child: CarouselSlider.builder(
-          itemCount: snapshot.data!.length,
-          options: CarouselOptions(
-            height: 300,
-            autoPlay: true,
-            viewportFraction: 0.55,
-            //enlargeCenterPage: true,
-            autoPlayCurve: Curves.fastOutSlowIn,
-            pageSnapping: true,
-            autoPlayAnimationDuration: const Duration(seconds: 1),
-          ),
-          itemBuilder: (context, itemIndex, pageViewIndex) {
-            return GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => DetailsScreen(
-                      movie: snapshot.data[itemIndex],
-                    ),
+        itemCount: snapshot.data!.length,
+        options: CarouselOptions(
+          height: 300,
+          autoPlay: true,
+          viewportFraction: 0.5, // Verringert den Abstand zwischen den Filmen
+          autoPlayCurve: Curves.fastOutSlowIn,
+          pageSnapping: true,
+          autoPlayAnimationDuration: const Duration(seconds: 1),
+        ),
+        itemBuilder: (context, itemIndex, pageViewIndex) {
+          return GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => DetailsScreen(
+                    movie: snapshot.data[itemIndex],
                   ),
-                );
-              },
-              child: Container(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: SizedBox(
-                    height: 300,
-                    width: 200,
-                    child: Image.network(
-                        filterQuality: FilterQuality.high,
-                        fit: BoxFit.cover,
-                        '${Constants.imageUrl}${snapshot.data[itemIndex].posterPath}'),
+                ),
+              );
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border.all(
+                    color: const Color.fromARGB(255, 255, 32, 32),
+                    width: 2), // Grauer Rand
+                borderRadius: BorderRadius.circular(8), // Runde Ecken
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: SizedBox(
+                  height: 300,
+                  width: 200,
+                  child: Image.network(
+                    filterQuality: FilterQuality.high,
+                    fit: BoxFit.cover,
+                    '${Constants.imageUrl}${snapshot.data[itemIndex].posterPath}',
                   ),
                 ),
               ),
-            );
-          }),
+            ),
+          );
+        },
+      ),
     );
   }
 }
