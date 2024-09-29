@@ -35,7 +35,7 @@ class MovieSlider extends StatelessWidget {
               },
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10),
-                child: Container(
+                child: SizedBox(
                   height: 225,
                   width: 150,
                   child: Image.network(

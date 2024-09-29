@@ -28,25 +28,26 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 0, 0, 0),
+      backgroundColor: const Color.fromARGB(255, 20, 31, 34),
       appBar: AppBar(
         title: Text(
           'Home',
-          style: GoogleFonts.inter(fontSize: 25),
+          style: GoogleFonts.inter(
+            fontSize: 25,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         backgroundColor: Colors.transparent,
-        centerTitle: true,
+        centerTitle: false,
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),
             onPressed: () {
-              // Aktion bei Klick auf das Icon
             },
           ),
         ],
       ),
       body: Center(
-        // Parent-Widget, um den Inhalt zu zentrieren
         child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
           child: Column(
@@ -56,7 +57,10 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               Text(
                 'Trending',
-                style: GoogleFonts.inter(fontSize: 18),
+                style: GoogleFonts.inter(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
               const SizedBox(height: 32),
               SizedBox(
@@ -82,7 +86,10 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               Text(
                 'Top Rated',
-                style: GoogleFonts.inter(fontSize: 18),
+                style: GoogleFonts.inter(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
               const SizedBox(
                 height: 32,
@@ -110,7 +117,10 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               Text(
                 'Upcoming',
-                style: GoogleFonts.inter(fontSize: 18),
+                style: GoogleFonts.inter(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
               const SizedBox(
                 height: 32,
