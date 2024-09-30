@@ -20,7 +20,10 @@ class TrendingSlider extends StatelessWidget {
         options: CarouselOptions(
           height: 300,
           autoPlay: true,
-          viewportFraction: 0.5,
+          viewportFraction: MediaQuery.of(context).size.width >
+                  MediaQuery.of(context).size.height
+              ? 0.25
+              : 0.5, // viewportFraction je nach Layout
           autoPlayCurve: Curves.fastOutSlowIn,
           pageSnapping: true,
           autoPlayAnimationDuration: const Duration(seconds: 1),
@@ -38,17 +41,18 @@ class TrendingSlider extends StatelessWidget {
               );
             },
             child: Container(
+              margin: const EdgeInsets.symmetric(
+                  horizontal: 8.0), // Abstand zwischen den Postern
               decoration: BoxDecoration(
                 border: Border.all(
-                    color: const Color.fromARGB(255, 41, 41, 41),
-                    width: 1),
+                    color: const Color.fromARGB(255, 41, 41, 41), width: 1),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(8),
                 child: SizedBox(
                   height: 300,
-                  width: 200,
+                  width: 200, // Die feste Breite des Containers bleibt
                   child: Image.network(
                     filterQuality: FilterQuality.high,
                     fit: BoxFit.cover,

@@ -13,6 +13,10 @@ dependencies:
   google_fonts: ^6.2.1
   http: ^1.2.2
   carousel_slider: ^5.0.0
+  curved_navigation_bar: ^1.0.6
+  sliding_clipped_nav_bar: ^3.1.1
+  go_router: ^14.2.8
+  google_nav_bar: ^5.0.6
 
 dev_dependencies:
   flutter_test:

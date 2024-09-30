@@ -1,9 +1,14 @@
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:media_recommendation_app/api/api.dart';
 import 'package:media_recommendation_app/main.dart';
 import 'package:media_recommendation_app/models/movie.dart';
+import 'package:media_recommendation_app/screens/favorites_screen.dart';
+import 'package:media_recommendation_app/screens/profile_screen.dart';
 import 'package:media_recommendation_app/screens/search_screen.dart';
+import 'package:media_recommendation_app/screens/settings_screen.dart';
 import 'package:media_recommendation_app/widgets/movie_slider.dart';
 import 'package:media_recommendation_app/widgets/trending_slider.dart';
 
@@ -15,6 +20,14 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> with RouteAware {
+  int _selectedIndex = 0;
+
+  final List<Widget> _pages = [
+    FavoritesScreen(), // Favorites-Seite
+    ProfileScreen(title: 'Profile'), // Profile-Seite
+    SettingsScreen(title: 'Settings'), // Settings-Seite
+  ];
+
   late Future<List<Movie>> trendingMovies;
   late Future<List<Movie>> topRatedMovies;
   late Future<List<Movie>> upcomingMovies;
@@ -48,6 +61,16 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
         .subscribe(this, ModalRoute.of(context)! as PageRoute<dynamic>);
   }
 
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index; // Update selected index
+    });
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => _pages[index]),
+    ); // Navigate to corresponding page
+  }
+
   @override
   void dispose() {
     MyApp.routeObserver.unsubscribe(this);
@@ -64,197 +87,208 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 0, 0, 0),
-      appBar: AppBar(
-        title: Text(
-          'Explore',
-          style: GoogleFonts.inter(
-            fontSize: 25,
-            fontWeight: FontWeight.bold,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: SizedBox(
+                  height: 50,
+                  child: TextField(
+                    controller: _searchController,
+                    decoration: InputDecoration(
+                      hintText: 'Search for a movie...',
+                      hintStyle: const TextStyle(
+                          color: Color.fromARGB(80, 255, 255, 255),
+                          fontSize: 17,
+                          fontWeight: FontWeight.w500),
+                      filled: true,
+                      fillColor: Color.fromARGB(255, 29, 29, 29),
+                      border: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                        borderSide: BorderSide.none,
+                      ),
+                      prefixIcon: const Icon(Icons.search,
+                          color: Color.fromARGB(80, 255, 255, 255)),
+                      contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
+                    ),
+                    style: const TextStyle(color: Colors.white),
+                    onSubmitted: (value) {
+                      if (value.isNotEmpty) {
+                        String encodedQuery = Uri.encodeComponent(value);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                SearchScreen(query: Uri.encodeComponent(value)),
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              Padding(
+                padding: const EdgeInsets.only(left: 24.0),
+                child: Text(
+                  'Trending',
+                  style: GoogleFonts.inter(
+                    fontSize: 22,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              SizedBox(
+                child: FutureBuilder(
+                  future: trendingMovies,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return Center(
+                        child: Text(snapshot.error.toString()),
+                      );
+                    } else if (snapshot.hasData) {
+                      return TrendingSlider(
+                        snapshot: snapshot,
+                      );
+                    } else {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                  },
+                ),
+              ),
+              const SizedBox(height: 36),
+              Padding(
+                padding: const EdgeInsets.only(left: 24.0),
+                child: Text(
+                  'Recently Released',
+                  style: GoogleFonts.inter(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              Padding(
+                padding: const EdgeInsets.only(left: 24.0),
+                child: SizedBox(
+                  child: FutureBuilder(
+                    future: recentMovies,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return Center(
+                          child: Text(snapshot.error.toString()),
+                        );
+                      } else if (snapshot.hasData) {
+                        return MovieSlider(
+                          snapshot: snapshot,
+                        );
+                      } else {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+                    },
+                  ),
+                ),
+              ),
+              const SizedBox(height: 36),
+              Padding(
+                padding: const EdgeInsets.only(left: 24.0),
+                child: Text(
+                  'Upcoming',
+                  style: GoogleFonts.inter(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              Padding(
+                padding: const EdgeInsets.only(left: 24.0),
+                child: SizedBox(
+                  child: FutureBuilder(
+                    future: upcomingMovies,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return Center(
+                          child: Text(snapshot.error.toString()),
+                        );
+                      } else if (snapshot.hasData) {
+                        return MovieSlider(
+                          snapshot: snapshot,
+                        );
+                      } else {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+                    },
+                  ),
+                ),
+              ),
+              const SizedBox(height: 36),
+              Padding(
+                padding: const EdgeInsets.only(left: 24.0),
+                child: Text(
+                  'All-Time Top Rated',
+                  style: GoogleFonts.inter(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              Padding(
+                padding: const EdgeInsets.only(left: 24.0),
+                child: SizedBox(
+                  child: FutureBuilder(
+                    future: topRatedMovies,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return Center(
+                          child: Text(snapshot.error.toString()),
+                        );
+                      } else if (snapshot.hasData) {
+                        return MovieSlider(
+                          snapshot: snapshot,
+                        );
+                      } else {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+                    },
+                  ),
+                ),
+              ),
+              const SizedBox(height: 24),
+            ],
           ),
         ),
-        backgroundColor: Colors.black,
-        centerTitle: false,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: () {},
-          ),
-        ],
       ),
-      body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: SizedBox(
-                height: 50,
-                child: TextField(
-                  controller: _searchController,
-                  decoration: InputDecoration(
-                    hintText: 'Search for a movie...',
-                    hintStyle: const TextStyle(
-                        color: Color.fromARGB(80, 255, 255, 255),
-                        fontSize: 17,
-                        fontWeight: FontWeight.w700),
-                    filled: true,
-                    fillColor: Color.fromARGB(255, 29, 29, 29),
-                    border: const OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(30.0)),
-                      borderSide: BorderSide.none,
-                    ),
-                    prefixIcon: const Icon(Icons.search,
-                        color: Color.fromARGB(80, 255, 255, 255)),
-                    contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
-                  ),
-                  style: const TextStyle(color: Colors.white),
-                  onSubmitted: (value) {
-                    if (value.isNotEmpty) {
-                      String encodedQuery = Uri.encodeComponent(value);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              SearchScreen(query: Uri.encodeComponent(value)),
-                        ),
-                      );
-                    }
-                  },
-                ),
-              ),
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          color: Colors.black, // Hintergrundfarbe der NavBar
+          border: Border(
+            top: BorderSide(
+              color: const Color.fromARGB(
+                  255, 41, 41, 41), // Farbe des oberen Randes
+              width: 1, // Dicke des oberen Randes
             ),
-            const SizedBox(height: 16),
-            Padding(
-              padding: const EdgeInsets.only(left: 24.0),
-              child: Text(
-                'Trending',
-                style: GoogleFonts.inter(
-                  fontSize: 22,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-            const SizedBox(height: 16),
-            SizedBox(
-              child: FutureBuilder(
-                future: trendingMovies,
-                builder: (context, snapshot) {
-                  if (snapshot.hasError) {
-                    return Center(
-                      child: Text(snapshot.error.toString()),
-                    );
-                  } else if (snapshot.hasData) {
-                    return TrendingSlider(
-                      snapshot: snapshot,
-                    );
-                  } else {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-                },
-              ),
-            ),
-            const SizedBox(height: 36),
-            Padding(
-              padding: const EdgeInsets.only(left: 24.0),
-              child: Text(
-                'Recently Released',
-                style: GoogleFonts.inter(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-            const SizedBox(height: 16),
-            Padding(
-              padding: const EdgeInsets.only(left: 24.0),
-              child: SizedBox(
-                child: FutureBuilder(
-                  future: recentMovies,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) {
-                      return Center(
-                        child: Text(snapshot.error.toString()),
-                      );
-                    } else if (snapshot.hasData) {
-                      return MovieSlider(
-                        snapshot: snapshot,
-                      );
-                    } else {
-                      return const Center(child: CircularProgressIndicator());
-                    }
-                  },
-                ),
-              ),
-            ),
-            const SizedBox(height: 36),
-            Padding(
-              padding: const EdgeInsets.only(left: 24.0),
-              child: Text(
-                'Upcoming',
-                style: GoogleFonts.inter(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-            const SizedBox(height: 16),
-            Padding(
-              padding: const EdgeInsets.only(left: 24.0),
-              child: SizedBox(
-                child: FutureBuilder(
-                  future: upcomingMovies,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) {
-                      return Center(
-                        child: Text(snapshot.error.toString()),
-                      );
-                    } else if (snapshot.hasData) {
-                      return MovieSlider(
-                        snapshot: snapshot,
-                      );
-                    } else {
-                      return const Center(child: CircularProgressIndicator());
-                    }
-                  },
-                ),
-              ),
-            ),
-            const SizedBox(height: 36),
-            Padding(
-              padding: const EdgeInsets.only(left: 24.0),
-              child: Text(
-                'All-Time Top Rated',
-                style: GoogleFonts.inter(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-            const SizedBox(height: 16),
-            Padding(
-              padding: const EdgeInsets.only(left: 24.0),
-              child: SizedBox(
-                child: FutureBuilder(
-                  future: topRatedMovies,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) {
-                      return Center(
-                        child: Text(snapshot.error.toString()),
-                      );
-                    } else if (snapshot.hasData) {
-                      return MovieSlider(
-                        snapshot: snapshot,
-                      );
-                    } else {
-                      return const Center(child: CircularProgressIndicator());
-                    }
-                  },
-                ),
-              ),
-            ),
+          ), // Optional, abgerundete Ecken
+        ),
+        child: GNav(
+          gap: 10,
+          activeColor: Colors.white,
+          color: const Color.fromARGB(255, 255, 32, 32),
+          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 22),
+          onTabChange: _onItemTapped, // Abstand der Icons zueinander
+          tabs: const [
+            GButton(icon: Icons.home),
+            GButton(icon: Icons.favorite),
+            GButton(icon: Icons.person),
+            GButton(icon: Icons.settings),
           ],
         ),
       ),
