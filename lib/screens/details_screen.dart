@@ -1,7 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:media_recommendation_app/colors.dart';
 import 'package:media_recommendation_app/constants.dart';
 import 'package:media_recommendation_app/models/movie.dart';
 import 'package:media_recommendation_app/widgets/back_button.dart';
