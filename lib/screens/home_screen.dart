@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:media_recommendation_app/api/api.dart';
 import 'package:media_recommendation_app/models/movie.dart';
+import 'package:media_recommendation_app/screens/details_screen.dart';
+import 'package:media_recommendation_app/screens/search_screen.dart';
 import 'package:media_recommendation_app/widgets/movie_slider.dart';
 import 'package:media_recommendation_app/widgets/trending_slider.dart';
+import 'package:media_recommendation_app/widgets/search_bar.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -16,6 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
   late Future<List<Movie>> trendingMovies;
   late Future<List<Movie>> topRatedMovies;
   late Future<List<Movie>> upcomingMovies;
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
@@ -54,8 +58,42 @@ class _HomeScreenState extends State<HomeScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.only(
-                  left: 24.0),
+              padding: const EdgeInsets.all(16.0),
+              child: TextField(
+                controller: _searchController,
+                decoration: InputDecoration(
+                  hintText: 'Search for a movie...',
+                  hintStyle: const TextStyle(
+                      color: Color.fromARGB(80, 255, 255, 255),
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700),
+                  filled: true,
+                  fillColor: Color.fromARGB(255, 29, 29, 29),
+                  border: const OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                    borderSide: BorderSide.none,
+                  ),
+                  prefixIcon: const Icon(Icons.search,
+                      color: Color.fromARGB(80, 255, 255, 255)),
+                ),
+                style: const TextStyle(color: Colors.white),
+                onSubmitted: (value) {
+                  if (value.isNotEmpty) {
+                    String encodedQuery = Uri.encodeComponent(value);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            SearchScreen(query: Uri.encodeComponent(value)),
+                      ),
+                    );
+                  }
+                },
+              ),
+            ),
+            const SizedBox(height: 16),
+            Padding(
+              padding: const EdgeInsets.only(left: 24.0),
               child: Text(
                 'Trending',
                 style: GoogleFonts.inter(
@@ -85,8 +123,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             const SizedBox(height: 36),
             Padding(
-              padding: const EdgeInsets.only(
-                  left: 24.0),
+              padding: const EdgeInsets.only(left: 24.0),
               child: Text(
                 'All-Time Top Rated',
                 style: GoogleFonts.inter(
@@ -119,8 +156,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             const SizedBox(height: 36),
             Padding(
-              padding: const EdgeInsets.only(
-                  left: 24.0),
+              padding: const EdgeInsets.only(left: 24.0),
               child: Text(
                 'Upcoming',
                 style: GoogleFonts.inter(
