@@ -20,7 +20,7 @@ class TrendingSlider extends StatelessWidget {
         options: CarouselOptions(
           height: 300,
           autoPlay: true,
-          viewportFraction: 0.5, // Verringert den Abstand zwischen den Filmen
+          viewportFraction: 0.5,
           autoPlayCurve: Curves.fastOutSlowIn,
           pageSnapping: true,
           autoPlayAnimationDuration: const Duration(seconds: 1),
@@ -40,9 +40,9 @@ class TrendingSlider extends StatelessWidget {
             child: Container(
               decoration: BoxDecoration(
                 border: Border.all(
-                    color: const Color.fromARGB(255, 255, 32, 32),
-                    width: 2), // Grauer Rand
-                borderRadius: BorderRadius.circular(8), // Runde Ecken
+                    color: const Color.fromARGB(255, 41, 41, 41),
+                    width: 1),
+                borderRadius: BorderRadius.circular(8),
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(8),

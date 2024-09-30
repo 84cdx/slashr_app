@@ -24,11 +24,11 @@ class Movie {
   factory Movie.fromJson(Map<String, dynamic> json) {
     return Movie(
       title: json["title"] ??
-          "No title available", // Sicherstellen, dass es einen Fallback-Wert gibt
-      backDropPath: json["backdrop_path"] ?? "", // Standardwert für null
+          "No title available",
+      backDropPath: json["backdrop_path"] ?? "",
       originalTitle: json["original_title"] ?? "No original title available",
       overview: json["overview"] ?? "No overview available",
-      posterPath: json["poster_path"] ?? "", // Standardwert für das Poster
+      posterPath: json["poster_path"] ?? "",
       genreIds:
           List<int>.from(json["genre_ids"]?.map((item) => item as int) ?? []),
       popularity: (json["popularity"] ?? 0).toDouble(),

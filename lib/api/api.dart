@@ -13,6 +13,9 @@ class Api {
   static const _upcomingUrl =
       '${Constants.baseUrl}movie/upcoming?api_key=${Constants.apiKey}';
 
+  static const _recentUrl =
+      '${Constants.baseUrl}movie/now_playing?api_key=${Constants.apiKey}';
+
   Future<List<Movie>> fetchHorrorMovies() async {
     final response = await http.get(
       Uri.parse(
@@ -41,10 +44,9 @@ class Api {
         ),
       );
 
-      // Verarbeite die Antwort, um sicherzustellen, dass sie keine Fehler verursacht
       return _processResponse(response);
     } catch (e) {
-      print('Error occurred while searching: $e'); // Debugging
+      print('Error occurred while searching: $e');
       return [];
     }
   }
@@ -54,17 +56,12 @@ class Api {
       final jsonResponse = jsonDecode(response.body);
       List movies = jsonResponse['results'];
 
-      // Verwende contains, um eine breitere Übereinstimmung zu erzielen
       List<Movie> matchingMovies = movies
           .map((movie) => Movie.fromJson(movie))
-          .where((movie) =>
-              movie.genreIds.contains(27)) // Filtern nach Genre Horror
+          .where((movie) => movie.genreIds.contains(27))
           .toList();
 
-      // Wenn keine Horrorfilme gefunden werden, gib einfach die leere Liste zurück
-      return matchingMovies
-          .take(5)
-          .toList(); // Rückgabe der obersten 5 Horrorfilme oder weniger
+      return matchingMovies.take(5).toList();
     } else {
       throw Exception('Failed to load movies');
     }
@@ -83,6 +80,25 @@ class Api {
     }
   }
 
+  Future<List<Movie>> getRecentMovies(int totalPages) async {
+    List<Movie> allRecentMovies = [];
+
+    for (int i = 1; i <= totalPages; i++) {
+      final response = await http.get(Uri.parse('$_recentUrl&page=$i'));
+      if (response.statusCode == 200) {
+        final decodedData = json.decode(response.body)['results'] as List;
+        allRecentMovies
+            .addAll(decodedData.map((movie) => Movie.fromJson(movie)));
+      } else {
+        throw Exception('something went wrong');
+      }
+    }
+
+    return allRecentMovies
+        .where((movie) => movie.genreIds.contains(27))
+        .toList();
+  }
+
   Future<List<Movie>> getTopRatedMovies(int totalPages) async {
     List<Movie> allTopRatedMovies = [];
 
@@ -97,30 +113,32 @@ class Api {
       }
     }
 
-    // Filtere die Horrorfilme
     return allTopRatedMovies
         .where((movie) => movie.genreIds.contains(27))
         .toList();
   }
 
-  Future<List<Movie>> getUpcomingMovies() async {
-    final response = await http.get(Uri.parse(_upcomingUrl));
-    if (response.statusCode == 200) {
-      final decodedData = json.decode(response.body)['results'] as List;
-      print(decodedData);
-      List<Movie> upcomingMovies =
-          decodedData.map((movie) => Movie.fromJson(movie)).toList();
+  Future<List<Movie>> getUpcomingMovies(int totalPages) async {
+    List<Movie> allUpcomingMovies = [];
 
-      // Filtere nur Filme mit Release-Datum in der Zukunft und Genre-ID 27
-      upcomingMovies = upcomingMovies.where((movie) {
-        DateTime releaseDate = DateTime.parse(movie.releaseDate);
-        return releaseDate.isAfter(DateTime.now()) &&
-            movie.genreIds.contains(27);
-      }).toList();
-
-      return upcomingMovies;
-    } else {
-      throw Exception('something went wrong');
+    for (int i = 1; i <= totalPages; i++) {
+      final response = await http.get(Uri.parse('$_upcomingUrl&page=$i'));
+      if (response.statusCode == 200) {
+        final decodedData = json.decode(response.body)['results'] as List;
+        for (var movieJson in decodedData) {
+          Movie movie = Movie.fromJson(movieJson);
+          DateTime releaseDate = DateTime.parse(movie.releaseDate);
+          // Überprüfe, ob das Release-Datum in der Zukunft liegt
+          if (releaseDate.isAfter(DateTime.now()) &&
+              movie.genreIds.contains(27)) {
+            allUpcomingMovies.add(movie);
+          }
+        }
+      } else {
+        throw Exception('something went wrong');
+      }
     }
+
+    return allUpcomingMovies;
   }
 }

@@ -41,7 +41,7 @@ class MovieSlider extends StatelessWidget {
               child: Container(
                 decoration: BoxDecoration(
                   border: Border.all(
-                      color: const Color.fromARGB(255, 255, 32, 32),
+                      color: const Color.fromARGB(255, 41, 41, 41),
                       width: 1),
                   borderRadius: BorderRadius.circular(8),
                 ),

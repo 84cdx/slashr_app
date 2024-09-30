@@ -11,7 +11,7 @@ class SearchScreen extends StatelessWidget {
   Future<List<Movie>> _fetchSearchResults() async {
     try {
       final results = await Api().searchHorrorMovies(query);
-      print('Search results: $results'); // Debugging
+      print('Search results: $results');
       return results;
     } catch (e) {
       throw Exception('Failed to fetch search results: $e');
@@ -22,8 +22,10 @@ class SearchScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Search Results for "$query"'),
+        title: Text('Results for "${Uri.decodeComponent(query)}"'),
+        backgroundColor: Colors.transparent,
       ),
+      backgroundColor: Colors.black,
       body: FutureBuilder<List<Movie>>(
         future: _fetchSearchResults(),
         builder: (context, snapshot) {
@@ -41,7 +43,7 @@ class SearchScreen extends StatelessWidget {
           } else {
             return const Center(
                 child: Text(
-                    'No results found.')); // Hier wird eine leere Liste behandelt
+                    'No results found.'));
           }
         },
       ),
