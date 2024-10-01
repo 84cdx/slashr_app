@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:media_recommendation_app/constants.dart';
 import 'package:media_recommendation_app/models/movie.dart';
 import 'package:media_recommendation_app/screens/details_screen.dart';
@@ -18,7 +19,7 @@ class MovieSlider extends StatelessWidget {
     }
 
     return SizedBox(
-      height: 225,
+      height: 280,
       width: double.infinity,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
@@ -39,23 +40,43 @@ class MovieSlider extends StatelessWidget {
                 );
               },
               child: Container(
-                decoration: BoxDecoration(
-                  border: Border.all(
-                      color: const Color.fromARGB(255, 41, 41, 41),
-                      width: 1),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: SizedBox(
-                    height: 225,
-                    width: 150,
-                    child: Image.network(
-                      filterQuality: FilterQuality.high,
-                      fit: BoxFit.cover,
-                      '${Constants.imageUrl}${snapshot.data![index].posterPath}',
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                            color: const Color.fromARGB(255, 41, 41, 41),
+                            width: 1),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: SizedBox(
+                          height: 225,
+                          width: 150,
+                          child: Image.network(
+                            filterQuality: FilterQuality.high,
+                            fit: BoxFit.cover,
+                            '${Constants.imageUrl}${snapshot.data![index].posterPath}',
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
+                    Container(
+                      margin: const EdgeInsets.only(top: 8.0),
+                      width: 150,
+                      child: Text(
+                        '${snapshot.data![index].title}',
+                        style: GoogleFonts.inter(
+                          fontSize: 13.5,
+                          fontWeight: FontWeight.w400,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    )
+                  ],
                 ),
               ),
             ),

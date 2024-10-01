@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class ProfileScreen extends StatelessWidget {
   final String title;
 
-  const ProfileScreen({Key? key, required this.title}) : super(key: key);
+  const ProfileScreen({super.key, required this.title});
 
   @override
   Widget build(BuildContext context) {

@@ -1,4 +1,3 @@
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
@@ -23,9 +22,9 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
   int _selectedIndex = 0;
 
   final List<Widget> _pages = [
-    FavoritesScreen(), // Favorites-Seite
-    ProfileScreen(title: 'Profile'), // Profile-Seite
-    SettingsScreen(title: 'Settings'), // Settings-Seite
+    FavoritesScreen(),
+    ProfileScreen(title: 'Profile'),
+    SettingsScreen(title: 'Settings'),
   ];
 
   late Future<List<Movie>> trendingMovies;
@@ -63,12 +62,12 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
 
   void _onItemTapped(int index) {
     setState(() {
-      _selectedIndex = index; // Update selected index
+      _selectedIndex = index;
     });
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => _pages[index]),
-    ); // Navigate to corresponding page
+    );
   }
 
   @override
@@ -97,40 +96,61 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
             children: [
               Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: SizedBox(
-                  height: 50,
-                  child: TextField(
-                    controller: _searchController,
-                    decoration: InputDecoration(
-                      hintText: 'Search for a movie...',
-                      hintStyle: const TextStyle(
-                          color: Color.fromARGB(80, 255, 255, 255),
-                          fontSize: 17,
-                          fontWeight: FontWeight.w500),
-                      filled: true,
-                      fillColor: Color.fromARGB(255, 29, 29, 29),
-                      border: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(30.0)),
-                        borderSide: BorderSide.none,
-                      ),
-                      prefixIcon: const Icon(Icons.search,
-                          color: Color.fromARGB(80, 255, 255, 255)),
-                      contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
+                child: Column(
+                  children: [
+                    const SizedBox(height: 16),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          'assets/slashr_type.png',
+                          width: 200,
+                          height: 45,
+                        ),
+                        const SizedBox(
+                          width: 15,
+                        ),
+                      ],
                     ),
-                    style: const TextStyle(color: Colors.white),
-                    onSubmitted: (value) {
-                      if (value.isNotEmpty) {
-                        String encodedQuery = Uri.encodeComponent(value);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                SearchScreen(query: Uri.encodeComponent(value)),
+                    const SizedBox(height: 36),
+                    SizedBox(
+                      height: 50,
+                      child: TextField(
+                        controller: _searchController,
+                        decoration: InputDecoration(
+                          hintText: 'Search for a movie...',
+                          hintStyle: const TextStyle(
+                              color: Color.fromARGB(80, 255, 255, 255),
+                              fontSize: 17,
+                              fontWeight: FontWeight.w500),
+                          filled: true,
+                          fillColor: Color.fromARGB(255, 29, 29, 29),
+                          border: const OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(30.0)),
+                            borderSide: BorderSide.none,
                           ),
-                        );
-                      }
-                    },
-                  ),
+                          prefixIcon: const Icon(Icons.search,
+                              color: Color.fromARGB(80, 255, 255, 255)),
+                          contentPadding:
+                              const EdgeInsets.symmetric(vertical: 10.0),
+                        ),
+                        style: const TextStyle(color: Colors.white),
+                        onSubmitted: (value) {
+                          if (value.isNotEmpty) {
+                            String encodedQuery = Uri.encodeComponent(value);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => SearchScreen(
+                                    query: Uri.encodeComponent(value)),
+                              ),
+                            );
+                          }
+                        },
+                      ),
+                    ),
+                  ],
                 ),
               ),
               const SizedBox(height: 16),
@@ -163,18 +183,32 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
                   },
                 ),
               ),
-              const SizedBox(height: 36),
+              const SizedBox(height: 12),
               Padding(
-                padding: const EdgeInsets.only(left: 24.0),
-                child: Text(
-                  'Recently Released',
-                  style: GoogleFonts.inter(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                  ),
+                padding: const EdgeInsets.only(left: 24.0, right: 16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Recently Released',
+                      style: GoogleFonts.inter(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        //TODO
+                      },
+                      icon: const Icon(
+                        Icons.arrow_forward_rounded,
+                        color: const Color.fromARGB(255, 255, 32, 32),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 12),
               Padding(
                 padding: const EdgeInsets.only(left: 24.0),
                 child: SizedBox(
@@ -196,18 +230,32 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
                   ),
                 ),
               ),
-              const SizedBox(height: 36),
+              const SizedBox(height: 6),
               Padding(
-                padding: const EdgeInsets.only(left: 24.0),
-                child: Text(
-                  'Upcoming',
-                  style: GoogleFonts.inter(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                  ),
+                padding: const EdgeInsets.only(left: 24.0, right: 16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Upcoming',
+                      style: GoogleFonts.inter(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        //TODO
+                      },
+                      icon: const Icon(
+                        Icons.arrow_forward_rounded,
+                        color: const Color.fromARGB(255, 255, 32, 32),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 12),
               Padding(
                 padding: const EdgeInsets.only(left: 24.0),
                 child: SizedBox(
@@ -229,18 +277,32 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
                   ),
                 ),
               ),
-              const SizedBox(height: 36),
+              const SizedBox(height: 6),
               Padding(
-                padding: const EdgeInsets.only(left: 24.0),
-                child: Text(
-                  'All-Time Top Rated',
-                  style: GoogleFonts.inter(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                  ),
+                padding: const EdgeInsets.only(left: 24.0, right: 16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'All-Time Top Rated',
+                      style: GoogleFonts.inter(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        //TODO
+                      },
+                      icon: const Icon(
+                        Icons.arrow_forward_rounded,
+                        color: const Color.fromARGB(255, 255, 32, 32),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 12),
               Padding(
                 padding: const EdgeInsets.only(left: 24.0),
                 child: SizedBox(
@@ -269,26 +331,37 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
       ),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
-          color: Colors.black, // Hintergrundfarbe der NavBar
+          color: Colors.black,
           border: Border(
             top: BorderSide(
-              color: const Color.fromARGB(
-                  255, 41, 41, 41), // Farbe des oberen Randes
-              width: 1, // Dicke des oberen Randes
+              color: const Color.fromARGB(255, 41, 41, 41),
+              width: 1,
             ),
-          ), // Optional, abgerundete Ecken
+          ),
         ),
         child: GNav(
           gap: 10,
           activeColor: Colors.white,
           color: const Color.fromARGB(255, 255, 32, 32),
           padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 22),
-          onTabChange: _onItemTapped, // Abstand der Icons zueinander
-          tabs: const [
-            GButton(icon: Icons.home),
-            GButton(icon: Icons.favorite),
-            GButton(icon: Icons.person),
-            GButton(icon: Icons.settings),
+          onTabChange: _onItemTapped,
+          tabs: [
+            GButton(
+              icon: Icons.home,
+              iconSize: _selectedIndex == 0 ? 32 : 24,
+            ),
+            GButton(
+              icon: Icons.favorite,
+              iconSize: _selectedIndex == 1 ? 32 : 24,
+            ),
+            GButton(
+              icon: Icons.person,
+              iconSize: _selectedIndex == 2 ? 32 : 24,
+            ),
+            GButton(
+              icon: Icons.settings,
+              iconSize: _selectedIndex == 3 ? 32 : 24,
+            ),
           ],
         ),
       ),
