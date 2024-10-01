@@ -128,7 +128,6 @@ class Api {
         for (var movieJson in decodedData) {
           Movie movie = Movie.fromJson(movieJson);
           DateTime releaseDate = DateTime.parse(movie.releaseDate);
-          // Überprüfe, ob das Release-Datum in der Zukunft liegt
           if (releaseDate.isAfter(DateTime.now()) &&
               movie.genreIds.contains(27)) {
             allUpcomingMovies.add(movie);

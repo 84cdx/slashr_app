@@ -10,21 +10,21 @@ class FavoritesScreen extends StatelessWidget {
     return Scaffold(
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
-          color: Colors.black, // Hintergrundfarbe der NavBar
+          color: Colors.black,
           border: Border(
             top: BorderSide(
               color: const Color.fromARGB(
-                  255, 41, 41, 41), // Farbe des oberen Randes
-              width: 1, // Dicke des oberen Randes
+                  255, 41, 41, 41),
+              width: 1, 
             ),
-          ), // Optional, abgerundete Ecken
+          ),
         ),
         child: GNav(
           gap: 10,
           activeColor: Colors.white,
           color: const Color.fromARGB(255, 255, 32, 32),
           padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 22),
-          //onTabChange: _onItemTapped, // Abstand der Icons zueinander
+          //onTabChange: _onItemTapped,
           tabs: const [
             GButton(icon: Icons.home),
             GButton(icon: Icons.favorite),
