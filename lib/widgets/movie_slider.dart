@@ -67,7 +67,7 @@ class MovieSlider extends StatelessWidget {
                       margin: const EdgeInsets.only(top: 8.0),
                       width: 150,
                       child: Text(
-                        '${snapshot.data![index].title}',
+                        snapshot.data![index].title,
                         style: GoogleFonts.inter(
                           fontSize: 13.5,
                           fontWeight: FontWeight.w400,

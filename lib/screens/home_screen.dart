@@ -202,7 +202,7 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
                       },
                       icon: const Icon(
                         Icons.arrow_forward_rounded,
-                        color: const Color.fromARGB(255, 255, 32, 32),
+                        color: Color.fromARGB(255, 255, 32, 32),
                       ),
                     ),
                   ],
@@ -249,7 +249,7 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
                       },
                       icon: const Icon(
                         Icons.arrow_forward_rounded,
-                        color: const Color.fromARGB(255, 255, 32, 32),
+                        color: Color.fromARGB(255, 255, 32, 32),
                       ),
                     ),
                   ],
@@ -296,7 +296,7 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
                       },
                       icon: const Icon(
                         Icons.arrow_forward_rounded,
-                        color: const Color.fromARGB(255, 255, 32, 32),
+                        color: Color.fromARGB(255, 255, 32, 32),
                       ),
                     ),
                   ],
