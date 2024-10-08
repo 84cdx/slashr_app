@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:media_recommendation_app/models/movie.dart';
 import 'package:media_recommendation_app/screens/home_screen.dart';
+import 'package:media_recommendation_app/screens/main_screen.dart';
+
+final List<Movie> favoriteMovies = [];
 
 void main() {
   runApp(MyApp());
@@ -17,7 +21,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Slashr',
       theme: ThemeData.dark(),
-      home: const HomeScreen(),
+      home: MainScreen(),
       navigatorObservers: [routeObserver],
     );
   }

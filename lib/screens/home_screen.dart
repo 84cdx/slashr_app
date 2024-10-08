@@ -22,6 +22,7 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
   int _selectedIndex = 0;
 
   final List<Widget> _pages = [
+    HomeScreen(),
     FavoritesScreen(),
     ProfileScreen(title: 'Profile'),
     SettingsScreen(title: 'Settings'),
@@ -104,15 +105,13 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
                       children: [
                         Image.asset(
                           'assets/slashr_type.png',
-                          width: 200,
+                          width: 120,
                           height: 45,
                         ),
-                        const SizedBox(
-                          width: 15,
-                        ),
+
                       ],
                     ),
-                    const SizedBox(height: 36),
+                    const SizedBox(height: 28),
                     SizedBox(
                       height: 50,
                       child: TextField(
@@ -124,7 +123,7 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
                               fontSize: 17,
                               fontWeight: FontWeight.w500),
                           filled: true,
-                          fillColor: Color.fromARGB(255, 29, 29, 29),
+                          fillColor: Color.fromARGB(255, 22, 22, 22),
                           border: const OutlineInputBorder(
                             borderRadius:
                                 BorderRadius.all(Radius.circular(30.0)),
@@ -327,42 +326,6 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
               const SizedBox(height: 24),
             ],
           ),
-        ),
-      ),
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          color: Colors.black,
-          border: Border(
-            top: BorderSide(
-              color: const Color.fromARGB(255, 41, 41, 41),
-              width: 1,
-            ),
-          ),
-        ),
-        child: GNav(
-          gap: 10,
-          activeColor: Colors.white,
-          color: const Color.fromARGB(255, 255, 32, 32),
-          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 22),
-          onTabChange: _onItemTapped,
-          tabs: [
-            GButton(
-              icon: Icons.home,
-              iconSize: _selectedIndex == 0 ? 32 : 24,
-            ),
-            GButton(
-              icon: Icons.favorite,
-              iconSize: _selectedIndex == 1 ? 32 : 24,
-            ),
-            GButton(
-              icon: Icons.person,
-              iconSize: _selectedIndex == 2 ? 32 : 24,
-            ),
-            GButton(
-              icon: Icons.settings,
-              iconSize: _selectedIndex == 3 ? 32 : 24,
-            ),
-          ],
         ),
       ),
     );

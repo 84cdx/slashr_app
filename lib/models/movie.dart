@@ -23,8 +23,7 @@ class Movie {
 
   factory Movie.fromJson(Map<String, dynamic> json) {
     return Movie(
-      title: json["title"] ??
-          "No title available",
+      title: json["title"] ?? "No title available",
       backDropPath: json["backdrop_path"] ?? "",
       originalTitle: json["original_title"] ?? "No original title available",
       overview: json["overview"] ?? "No overview available",
@@ -48,4 +47,12 @@ class Movie {
         "release_date": releaseDate,
         "vote_average": voteAverage,
       };
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is Movie && title == other.title;
+  }
+
+  @override
+  int get hashCode => title.hashCode;
 }

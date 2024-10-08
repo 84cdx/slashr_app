@@ -127,7 +127,15 @@ class Api {
         final decodedData = json.decode(response.body)['results'] as List;
         for (var movieJson in decodedData) {
           Movie movie = Movie.fromJson(movieJson);
-          DateTime releaseDate = DateTime.parse(movie.releaseDate);
+          DateTime? releaseDate;
+
+          try {
+            releaseDate = DateTime.parse(movie.releaseDate);
+          } catch (e) {
+            print("Date parsing error: $e for movie: ${movie.title}");
+            continue;
+          }
+
           if (releaseDate.isAfter(DateTime.now()) &&
               movie.genreIds.contains(27)) {
             allUpcomingMovies.add(movie);
