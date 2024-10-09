@@ -19,7 +19,7 @@ class TrendingSlider extends StatelessWidget {
       child: CarouselSlider.builder(
         itemCount: snapshot.data!.length,
         options: CarouselOptions(
-          height: 350,
+          height: 354,
           autoPlay: true,
           viewportFraction: MediaQuery.of(context).size.width >
                   MediaQuery.of(context).size.height
